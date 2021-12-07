@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const getTalkers = require('./middlewares/getTalkers');
 const talkerIdFind = require('./middlewares/talkerIdFind');
-const tokenLogin = require('./middlewares/tokenLogin');
+const { validateLogin, validatePassword } = require('./middlewares/tokenLogin');
 const {
   validateAge,
   validateName,
@@ -21,7 +21,7 @@ app.get('/talker', getTalkers);
 // requisito 2
 app.get('/talker/:id', talkerIdFind);
 // requisito 3
-app.post('/login', tokenLogin);
+app.post('/login', validateLogin, validatePassword);
 // requisito 4
 app.post('/talker', validateAut, validateName, validateAge, validateTalk);
 
