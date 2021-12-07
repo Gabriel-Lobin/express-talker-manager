@@ -14,11 +14,15 @@ const validateLogin = (req, res, next) => {
 };
 const validatePassword = (req, res) => {
   if (!password || password.length === 0) {
-    return res.status(400).json({ message: 'O campo "password" é obrigatório' })
-  };
+    return res
+      .status(400)
+      .json({ message: 'O campo "password" é obrigatório' });
+  }
   if (password.length < 6) {
-    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' })
-  };
+    return res
+      .status(400)
+      .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+  }
   return res.status(200).json({
     token: '7mqaVRXJSp886CGr',
   });
@@ -26,7 +30,7 @@ const validatePassword = (req, res) => {
 
 module.exports = {
   validateLogin,
-  validatePassword
+  validatePassword,
 };
 
 // https://pt.stackoverflow.com/questions/1386/expressão-regular-para-validação-de-e-mail

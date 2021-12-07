@@ -6,7 +6,7 @@ const talkerIdFind = async (req, res) => {
   const jsonTalker = await JSON.parse(talker);
   const talkerFind = await jsonTalker.find((talk) => talk.id === Number(id));
   if (talkerFind) return res.status(200).json(talkerFind);
-  return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });  
+  return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 };
 
 module.exports = talkerIdFind;
