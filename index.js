@@ -7,7 +7,8 @@ const {
   validateAge,
   validateName,
   validateAut,
-  validateTalk,
+  validateWatchedAt,
+  validateRate,
 } = require('./middlewares/newTalker');
 
 const app = express();
@@ -23,7 +24,7 @@ app.get('/talker/:id', talkerIdFind);
 // requisito 3
 app.post('/login', validateLogin, validatePassword);
 // requisito 4
-app.post('/talker', validateAut, validateName, validateAge, validateTalk);
+app.post('/talker', validateAut, validateName, validateAge, validateWatchedAt, validateRate);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

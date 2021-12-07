@@ -46,18 +46,30 @@ const newTalker = async (req) => {
   const newData = JSON.stringify(jsonRetorno);
   console.log(JSON.stringify(jsonRetorno));
   fs.writeFile('./talker.json', newData);
-}
+  return newObject;
+};
 
-const validateTalk = (req, res) => {
+const validateWatchedAt = (req, res, next) => {
   const { talk } = req.body;
-  if (!talk || !talk.watchedAt || !talk.rate) return res.status(400).json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });  
-  if (!regexData.test(talk.watchedAt)) return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  if (!talk || !talk.watchedAt || !talk.rate) {
+    return res.status(400).json({
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+  if (!regexData.test(talk.watchedAt)) {
+    return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  }
+  next();
+};
+
+const validateRate = (req, res) => {
+  const { talk } = req.body;
   if (!Number.isInteger(talk.rate) || talk.rate > 5 || talk.rate < 1) {
     return res.status(400).json({
       message: 'O campo "rate" deve ser um inteiro de 1 à 5',
     });
   }
-  newTalker(req);
+  const newObject = newTalker(req);
   return res.status(201).json(newObject);
 };
 
@@ -65,7 +77,8 @@ module.exports = {
   validateAut,
   validateName,
   validateAge,
-  validateTalk,
+  validateWatchedAt,
+  validateRate,
 };
 
 // https://www.ti-enxame.com/pt/javascript/validar-data-no-formato-dd-mm-aaaa-usando-o-jquery-validate/1046988445/

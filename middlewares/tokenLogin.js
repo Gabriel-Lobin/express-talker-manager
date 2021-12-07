@@ -1,7 +1,7 @@
 const regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
 
 const validateLogin = (req, res, next) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
   if (!email || email.length === 0) {
     return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
@@ -13,6 +13,7 @@ const validateLogin = (req, res, next) => {
   next();
 };
 const validatePassword = (req, res) => {
+  const { password } = req.body;
   if (!password || password.length === 0) {
     return res
       .status(400)
