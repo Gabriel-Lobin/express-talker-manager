@@ -1,15 +1,15 @@
-const fs = require("fs/promises");
+const fs = require('fs/promises');
 
 const validateAut = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
     return res.status(401).json({
-      message: "Token não encontrado",
+      message: 'Token não encontrado',
     });
   }
-  if (authorization !== "7mqaVRXJSp886CGr") {
+  if (authorization !== '7mqaVRXJSp886CGr') {
     return res.status(401).json({
-      message: "Token inválido",
+      message: 'Token inválido',
     });
   }
   next();
@@ -17,7 +17,7 @@ const validateAut = (req, res, next) => {
 
 const validateName = (req, res, next) => {
   const { name } = req.body;
-  if (!name || name === "") {
+  if (!name || name === '') {
     return res.status(400).json({
       message: 'O campo "name" é obrigatório',
     });
@@ -32,14 +32,14 @@ const validateName = (req, res, next) => {
 
 const validateAge = (req, res, next) => {
   const { age } = req.body;
-  if (!age || age === "") {
+  if (!age || age === '') {
     return res.status(400).json({
       message: 'O campo "age" é obrigatório',
     });
   }
   if (age < 18) {
     return res.status(400).json({
-      message: "A pessoa palestrante deve ser maior de idade",
+      message: 'A pessoa palestrante deve ser maior de idade',
     });
   }
   next();
@@ -66,7 +66,7 @@ const validateTalk = async (req, res, next) => {
       message: 'O campo "rate" deve ser um inteiro de 1 à 5',
     });
   }
-  const retorno = await fs.readFile("./talker.json", "utf8");
+  const retorno = await fs.readFile('./talker.json', 'utf8');
   const jsonRetorno = JSON.parse(retorno);
   const Newid = jsonRetorno.length + 1;
   const newObject = {
@@ -75,10 +75,10 @@ const validateTalk = async (req, res, next) => {
     id: Newid,
     talk: { watchedAt: talk.watchedAt, rate: talk.rate },
   };
-    jsonRetorno.push(newObject);
-    const newData = JSON.stringify(jsonRetorno);
+  jsonRetorno.push(newObject);
+  const newData = JSON.stringify(jsonRetorno);
   console.log(JSON.stringify(jsonRetorno));
-  fs.writeFile("./talker.json", newData);
+  fs.writeFile('./talker.json', newData);
   return res.status(201).json(newObject);
 };
 
