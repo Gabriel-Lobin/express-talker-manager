@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const fs = require("fs/promises");
 const getTalkers = require("./middlewares/getTalkers");
 const talkerIdFind = require("./middlewares/talkerIdFind");
+const tokenLogin = require("./middlewares/tokenLogin");
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +14,8 @@ const PORT = "3000";
 app.get("/talker", getTalkers);
 // requisito 2
 app.get("/talker/:id", talkerIdFind);
+// requisito 3
+app.post("/login", tokenLogin);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get("/", (_request, response) => {
