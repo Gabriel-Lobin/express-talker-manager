@@ -9,12 +9,11 @@ const HTTP_OK_STATUS = 200;
 const PORT = "3000";
 
 app.get("/talker", async (req, res, next) => {
-  const talker = await fs.readFile("./talker.json", (err, content) => {
-    if (err) return res.status(200).json([]);
-    return content;
-  });
-  console.log(JSON.parse(talker));
-  return res.status(200).json(JSON.parse(talker));
+  const talker = await fs.readFile("./talker.json", 'utf8');
+  if(talker === undefined) return res.status(200).json([])
+  const retorno = JSON.parse(talker);
+  console.log(retorno);
+  return res.status(200).json(retorno);
   next();
 });
 // não remova esse endpoint, e para o avaliador funcionar
