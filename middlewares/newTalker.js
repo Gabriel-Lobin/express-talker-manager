@@ -2,7 +2,9 @@ const fs = require('fs/promises');
 
 const validateAut = (req, res, next) => {
   const { authorization } = req.headers;
-  if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });  
+  if (!authorization) {
+    return res.status(401).json({ message: 'Token não encontrado' });
+  }
   if (authorization !== '7mqaVRXJSp886CGr') {
     return res.status(401).json({ message: 'Token inválido' });
   }
@@ -22,7 +24,9 @@ const validateName = (req, res, next) => {
 
 const validateAge = (req, res, next) => {
   const { age } = req.body;
-  if (!age || age === '') return res.status(400).json({ message: 'O campo "age" é obrigatório' });  
+  if (!age || age === '') {
+    return res.status(400).json({ message: 'O campo "age" é obrigatório' });
+  }
   if (age < 18) {
     return res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
@@ -67,7 +71,7 @@ const addNewTalk = async (req, res) => {
     jsonRetorno.push(newObject);
     const newData = JSON.stringify(jsonRetorno);
     fs.writeFile('./talker.json', newData);  
-  return res.status(201).json(req.body);
+  return res.status(201).json(newObject);
 };
 
 module.exports = {
