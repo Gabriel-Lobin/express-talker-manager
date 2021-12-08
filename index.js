@@ -32,7 +32,7 @@ app.post(
   validateAge,
   validateWatchedAt,
   validateRate,
-  addNewTalk
+  addNewTalk,
 );
 
 // não remova esse endpoint, e para o avaliador funcionar
