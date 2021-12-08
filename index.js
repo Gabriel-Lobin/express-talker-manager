@@ -13,6 +13,7 @@ const {
 } = require('./middlewares/newTalker');
 const { editTalker } = require('./middlewares/editTalker');
 const deleteTalker = require('./middlewares/deleteTalker');
+const searchTalker = require('./middlewares/searchTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,6 +23,8 @@ const PORT = '3000';
 
 // requisito 1
 app.get('/talker', getTalkers);
+// requisito 7
+app.get('/talker/search', validateAut, searchTalker);
 // requisito 2
 app.get('/talker/:id', talkerIdFind);
 // requisito 3
