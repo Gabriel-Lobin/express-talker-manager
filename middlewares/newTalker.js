@@ -33,10 +33,16 @@ const validateAge = (req, res, next) => {
   next();
 };
 
+const condition = (talk) => {
+  if (!talk || !talk.watchedAt || (!talk.rate && talk.rate !== 0)) {
+    return true;
+  }
+  return false;
+};
 const validateWatchedAt = (req, res, next) => {
   const regexData = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
   const { talk } = req.body;
-  if (!talk || !talk.watchedAt || !talk.rate && talk.rate !== 0) {
+  if (condition(talk)) {
     return res.status(400).json({
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
@@ -59,8 +65,8 @@ const validateRate = (req, res, next) => {
 
 const addNewTalk = async (req, res) => {  
     const { name, age, talk } = req.body;
-    const retorno = await fs.readFile('./talker.json', 'utf8');
-    const jsonRetorno = JSON.parse(retorno);
+  const retorno = await fs.readFile('./talker.json', 'utf8');  
+  const jsonRetorno = await JSON.parse(retorno);  
     const Newid = jsonRetorno.length + 1;
     const newObject = {
       name,

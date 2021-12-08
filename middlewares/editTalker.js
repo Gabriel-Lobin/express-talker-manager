@@ -6,7 +6,6 @@ const editTalker = async (req, res) => {
   const retorno = await fs.readFile('./talker.json', 'utf8');
   const jsonRetorno = await JSON.parse(retorno);
   const talkerToEdit = jsonRetorno.filter((talker) => talker.id !== Number(id));
-  // console.log(talkerToEdit);
   const newObject = {
     name,
     age,
@@ -14,7 +13,6 @@ const editTalker = async (req, res) => {
     talk: { watchedAt: talk.watchedAt, rate: talk.rate },
   };
   talkerToEdit.push(newObject);
-  console.log(talkerToEdit);
   const newData = JSON.stringify(talkerToEdit);
   fs.writeFile('./talker.json', newData);
   return res.status(200).json(newObject);
