@@ -11,6 +11,7 @@ const {
   validateRate,
   addNewTalk,
 } = require('./middlewares/newTalker');
+const { editTalker } = require('./middlewares/editTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -34,7 +35,16 @@ app.post(
   validateRate,
   addNewTalk,
 );
-
+// requisito 5 incompleto
+app.put(
+  '/talker/:id',
+  validateAut,
+  validateName,
+  validateAge,
+  validateWatchedAt,
+  validateRate,
+  editTalker,
+);
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
