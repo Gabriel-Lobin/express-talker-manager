@@ -1,7 +1,5 @@
 const fs = require('fs/promises');
 
-const regexData = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
-
 const validateAut = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });  
@@ -31,25 +29,8 @@ const validateAge = (req, res, next) => {
   next();
 };
 
-const newTalker = async (req) => {
-  const { name, age, talk } = req.body;
-  const retorno = await fs.readFile('./talker.json', 'utf8');
-  const jsonRetorno = JSON.parse(retorno);
-  const Newid = jsonRetorno.length + 1;
-  const newObject = {
-    name,
-    age,
-    id: Newid,
-    talk: { watchedAt: talk.watchedAt, rate: talk.rate },
-  };
-  jsonRetorno.push(newObject);
-  const newData = JSON.stringify(jsonRetorno);
-  console.log(JSON.stringify(jsonRetorno));
-  fs.writeFile('./talker.json', newData);
-  return newObject;
-};
-
 const validateWatchedAt = (req, res, next) => {
+  const regexData = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
   const { talk } = req.body;
   if (!talk || !talk.watchedAt || !talk.rate) {
     return res.status(400).json({
@@ -62,15 +43,31 @@ const validateWatchedAt = (req, res, next) => {
   next();
 };
 
-const validateRate = (req, res) => {
+const validateRate = (req, res, next) => {
   const { talk } = req.body;
   if (!Number.isInteger(talk.rate) || talk.rate > 5 || talk.rate < 1) {
     return res.status(400).json({
       message: 'O campo "rate" deve ser um inteiro de 1 à 5',
     });
   }
-  const newObject = newTalker(req);
-  return res.status(201).json(newObject);
+  next();
+};
+
+const addNewTalk = async (req, res) => {  
+    const { name, age, talk } = req.body;
+    const retorno = await fs.readFile('./talker.json', 'utf8');
+    const jsonRetorno = JSON.parse(retorno);
+    const Newid = jsonRetorno.length + 1;
+    const newObject = {
+      name,
+      age,
+      id: Newid,
+      talk: { watchedAt: talk.watchedAt, rate: talk.rate },
+    };
+    jsonRetorno.push(newObject);
+    const newData = JSON.stringify(jsonRetorno);
+    fs.writeFile('./talker.json', newData);  
+  return res.status(201).json(req.body);
 };
 
 module.exports = {
@@ -79,6 +76,7 @@ module.exports = {
   validateAge,
   validateWatchedAt,
   validateRate,
+  addNewTalk,
 };
 
 // https://www.ti-enxame.com/pt/javascript/validar-data-no-formato-dd-mm-aaaa-usando-o-jquery-validate/1046988445/

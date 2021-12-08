@@ -1,4 +1,4 @@
-const regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const validateLogin = (req, res, next) => {
   const { email } = req.body;
@@ -6,9 +6,7 @@ const validateLogin = (req, res, next) => {
     return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
   if (!regexEmail.test(email)) {
-    return res
-      .status(400)
-      .json({ message: 'O "email" deve ter o formato "email@email.com"' });
+    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
   next();
 };
